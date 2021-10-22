@@ -72,6 +72,7 @@ public class CustomerController {
 		PlanDTO planDTO = template.getForObject("http://PLANMS"+"/plans/"+custDTO.getCurrentPlan().getPlanId(), PlanDTO.class);
 		custDTO.setCurrentPlan(planDTO);
 
+		
 
 		return custDTO;
 	}
