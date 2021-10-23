@@ -2,6 +2,7 @@ package com.infosys.infytel.customer.controller;
 
 import java.util.List;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +60,8 @@ public class CustomerController {
 //		custDTO.setFriendAndFamily(friends);
 //		return custDTO;
 //	}
-	
+
+	@HystrixCommand(fallbackMethod="getCustomerProfileFallback")
 	@GetMapping(value = "/customers/{phoneNo}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public CustomerDTO getCustomerProfile(@PathVariable Long phoneNo) {
 
@@ -71,10 +73,12 @@ public class CustomerController {
 
 		PlanDTO planDTO = template.getForObject("http://PLANMS"+"/plans/"+custDTO.getCurrentPlan().getPlanId(), PlanDTO.class);
 		custDTO.setCurrentPlan(planDTO);
-
 		
-
 		return custDTO;
+	}
+
+	public CustomerDTO getCustomerProfileFallback(Long phoneNo) {
+		return new CustomerDTO();
 	}
 
 
