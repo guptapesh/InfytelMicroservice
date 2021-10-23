@@ -1,0 +1,16 @@
+## Using Eureka with Ribbon
+
+Issue : [nio-3333-exec-1] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is java.lang.IllegalStateException: No instances available for ACCOUNTS-SERVICE] with root cause
+
+java.lang.IllegalStateException: No instances available for ACCOUNTS-SERVICE
+    at org.springframework.cloud.netflix.ribbon.RibbonLoadBalancerClient.execute(RibbonLoadBalancerClient.java:90) ~[spring-cloud-netflix-core-1.2.3.RELEASE.jar!/:1.2.3.RELEASE]
+    at org.springframework.cloud.client.loadbalancer.RetryLoadBalancerInterceptor$1.doWithRetry(RetryLoadBalancerInterceptor.java:60) ~[spring-cloud-commons-1.1.6.RELEASE.jar!/:1.1.6.RELEASE]
+    at org.springframework.cloud.client.loadbalancer.RetryLoadBalancerInterceptor$1.doWithRetry(RetryLoadBalancerInterceptor.java:48) ~[spring-cloud-commons-1.1.6.RELEASE.jar!/:1.1.6.RELEASE]
+    at org.springframework.retry.support.RetryTemplate.doExecute(RetryTemplate.java:276) ~[spring-retry-1.1.4.RELEASE.jar!/:na]
+    at org.springframework.retry.support.RetryTemplate.execute(RetryTemplate.java:157) ~[spring-retry-1.1.4.RELEASE.jar!/:na]
+ 
+ Cause : I was using  2 dependencies separately, eureka discovery and ribbon client. But eureka discovery already has ribbon client in it.
+
+Solution: Remove ribbon client dependencie from Pom file 
+
+Reference : https://stackoverflow.com/questions/31574131/ribbon-with-spring-cloud-and-eureka-java-lang-illegalstateexception-no-instanc 
